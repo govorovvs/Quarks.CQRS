@@ -1,0 +1,32 @@
+{
+  "description": "Foundations for SQRS",
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0"
+      }
+    },
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0"
+      }
+    },
+    "net46": {
+    }
+  },
+  "packOptions": {
+    "authors": [ "victor.govorov" ],
+    "iconUrl": "https://github.com/govorovvs/Quarks.CQRS/blob/master/logo.png?raw=true",
+    "owners": [ "victor.govorov" ],
+    "projectUrl": "https://github.com/govorovvs/CQRS",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/govorovvs/CQRS"
+    },
+    "tags": [ "architecture", "cqrs" ]
+  },
+  "title": "Quarks.CQRS",
+  "version": "1.0.0-*"
+}

@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Moq": "4.5.16",
+    "NUnit": "3.4.1",
+    "Quarks.CQRS": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "net46": {
+    }
+  }
+}
