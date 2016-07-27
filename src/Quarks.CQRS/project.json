@@ -20,10 +20,10 @@
     "authors": [ "victor.govorov" ],
     "iconUrl": "https://github.com/govorovvs/Quarks.CQRS/blob/master/logo.png?raw=true",
     "owners": [ "victor.govorov" ],
-    "projectUrl": "https://github.com/govorovvs/CQRS",
+    "projectUrl": "https://github.com/govorovvs/Quarks.CQRS",
     "repository": {
       "type": "git",
-      "url": "https://github.com/govorovvs/CQRS"
+      "url": "https://github.com/govorovvs/Quarks.CQRS"
     },
     "tags": [ "architecture", "cqrs" ]
   },
