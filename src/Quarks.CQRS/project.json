@@ -1,5 +1,5 @@
 {
-  "description": "Foundations for SQRS",
+  "description": "Foundations for CQRS",
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {
@@ -23,7 +23,7 @@
     "projectUrl": "https://github.com/govorovvs/Quarks.CQRS",
     "repository": {
       "type": "git",
-      "url": "https://github.com/govorovvs/Quarks.CQRS"
+      "url": "https://github.com/govorovvs/Quarks.CQRS.git"
     },
     "tags": [ "architecture", "cqrs" ]
   },
