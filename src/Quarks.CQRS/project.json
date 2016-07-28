@@ -13,7 +13,7 @@
         "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0"
       }
     },
-    "net46": {
+    "net45": {
     }
   },
   "packOptions": {
@@ -28,5 +28,5 @@
     "tags": [ "architecture", "cqrs" ]
   },
   "title": "Quarks.CQRS",
-  "version": "1.0.0-*"
+  "version": "2.0.0-*"
 }
