@@ -38,7 +38,7 @@ namespace Quarks.CQRS.Tests
 				.Returns(handler.Object);
 
 			FakeModel result =
-				await _dispatcher.DispatchAsync<FakeQuery, FakeModel>(fakeQuery, _cancellationToken);
+				await _dispatcher.DispatchAsync(fakeQuery, _cancellationToken);
 
 			Assert.That(result, Is.EqualTo(fakeModel));
 		}
@@ -59,7 +59,7 @@ namespace Quarks.CQRS.Tests
 				.Returns(handler.Object);
 
 			FakeModel result =
-				await _dispatcher.DispatchAsync<FakeQuery, FakeModel>(fakeQuery);
+				await _dispatcher.DispatchAsync(fakeQuery);
 
 			Assert.That(result, Is.EqualTo(fakeModel));
 		}

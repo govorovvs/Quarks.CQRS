@@ -19,7 +19,7 @@ namespace Quarks.CQRS
 
 		public Task<TResult> DispatchAsync<TQuery>(TQuery query, CancellationToken ct) where TQuery : IQuery<TResult>
 		{
-			return _queryDispatcher.DispatchAsync<TQuery, TResult>(query, ct);
+			return _queryDispatcher.DispatchAsync(query, ct);
 		} 
 	}
 }

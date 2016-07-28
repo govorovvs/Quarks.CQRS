@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,22 +14,27 @@ namespace Quarks.CQRS.Impl
 			_serviceProvider = serviceProvider;
 		}
 
-		public Task<TResult> DispatchAsync<TQuery, TResult>(TQuery query) where TQuery : IQuery<TResult>
+		public Task<TResult> DispatchAsync<TResult>(IQuery<TResult> query)
 		{
-			return DispatchAsync<TQuery, TResult>(query, CancellationToken.None);
+			return DispatchAsync(query, CancellationToken.None);
 		}
 
-		public Task<TResult> DispatchAsync<TQuery, TResult>(TQuery query, CancellationToken ct) where TQuery : IQuery<TResult>
+		public Task<TResult> DispatchAsync<TResult>(IQuery<TResult> query, CancellationToken ct)
 		{
 			if (query == null) throw new ArgumentNullException(nameof(query));
 
-			IQueryHandler<TQuery, TResult> handler = ResolveHandler<TQuery, TResult>();
-			return handler.HandleAsync(query, ct);
+			Type queryType = query.GetType();
+			object handler = ResolveHandler(queryType, typeof(TResult));
+			MethodInfo method = handler.GetType().GetRuntimeMethod("HandleAsync", new[] {queryType, ct.GetType()});
+			return (Task<TResult>) method.Invoke(handler, new object[] {query, ct});
 		}
 
-		private IQueryHandler<TQuery, TResult> ResolveHandler<TQuery, TResult>() where TQuery : IQuery<TResult>
+		private object ResolveHandler(Type queryType, Type resultType) 
 		{
-			return (IQueryHandler<TQuery, TResult>)_serviceProvider.GetService(typeof(IQueryHandler<TQuery,TResult>));
+			Type handlerType = typeof(IQueryHandler<,>);
+			Type type = handlerType.MakeGenericType(queryType, resultType);
+
+			return _serviceProvider.GetService(type);
 		}
 	}
 }
