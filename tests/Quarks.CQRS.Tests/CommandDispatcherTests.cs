@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -10,7 +9,7 @@ namespace Quarks.CQRS.Tests
 	[TestFixture]
 	public class CommandDispatcherTests
 	{
-		private Mock<IServiceProvider> _mockServiceProvider;
+		private Mock<IHandlerFactory> _mockHandlerFactory;
 		private CommandDispatcher _dispatcher;
 		private CancellationToken _cancellationToken;
 
@@ -18,8 +17,8 @@ namespace Quarks.CQRS.Tests
 		public void SetUp()
 		{
 			_cancellationToken = CancellationToken.None;
-			_mockServiceProvider = new Mock<IServiceProvider>();
-			_dispatcher = new CommandDispatcher(_mockServiceProvider.Object);
+			_mockHandlerFactory = new Mock<IHandlerFactory>();
+			_dispatcher = new CommandDispatcher(_mockHandlerFactory.Object);
 		}
 
 		[Test]
@@ -32,8 +31,8 @@ namespace Quarks.CQRS.Tests
 				.Setup(x => x.HandleAsync(fakeCommand, _cancellationToken))
 				.Returns(Task.CompletedTask);
 
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(ICommandHandler<FakeCommand>)))
+			_mockHandlerFactory
+				.Setup(x => x.CreateHandler(typeof(ICommandHandler<FakeCommand>)))
 				.Returns(handler.Object);
 
 			await _dispatcher.DispatchAsync(fakeCommand, _cancellationToken);
@@ -51,8 +50,8 @@ namespace Quarks.CQRS.Tests
 				.Setup(x => x.HandleAsync(fakeCommand, CancellationToken.None))
 				.Returns(Task.CompletedTask);
 
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(ICommandHandler<FakeCommand>)))
+			_mockHandlerFactory
+				.Setup(x => x.CreateHandler(typeof(ICommandHandler<FakeCommand>)))
 				.Returns(handler.Object);
 
 			await _dispatcher.DispatchAsync(fakeCommand);

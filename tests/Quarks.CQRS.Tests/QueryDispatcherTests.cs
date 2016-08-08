@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -11,15 +10,15 @@ namespace Quarks.CQRS.Tests
     public class QueryDispatcherTests
 	{
 		private CancellationToken _cancellationToken;
-		private Mock<IServiceProvider> _mockServiceProvider;
+		private Mock<IHandlerFactory> _mockHandlerFactory;
 		private QueryDispatcher _dispatcher;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_cancellationToken = CancellationToken.None;
-			_mockServiceProvider = new Mock<IServiceProvider>();
-			_dispatcher = new QueryDispatcher(_mockServiceProvider.Object);
+			_mockHandlerFactory = new Mock<IHandlerFactory>();
+			_dispatcher = new QueryDispatcher(_mockHandlerFactory.Object);
 		}
 
 		[Test]
@@ -33,8 +32,8 @@ namespace Quarks.CQRS.Tests
 				.Setup(x => x.HandleAsync(fakeQuery, _cancellationToken))
 				.ReturnsAsync(fakeModel);
 
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(IQueryHandler<FakeQuery, FakeModel>)))
+			_mockHandlerFactory
+				.Setup(x => x.CreateHandler(typeof(IQueryHandler<FakeQuery, FakeModel>)))
 				.Returns(handler.Object);
 
 			FakeModel result =
@@ -54,8 +53,8 @@ namespace Quarks.CQRS.Tests
 				.Setup(x => x.HandleAsync(fakeQuery, CancellationToken.None))
 				.ReturnsAsync(fakeModel);
 
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(IQueryHandler<FakeQuery, FakeModel>)))
+			_mockHandlerFactory
+				.Setup(x => x.CreateHandler(typeof(IQueryHandler<FakeQuery, FakeModel>)))
 				.Returns(handler.Object);
 
 			FakeModel result =
@@ -75,8 +74,8 @@ namespace Quarks.CQRS.Tests
 				.Setup(x => x.HandleAsync(fakeQuery, _cancellationToken))
 				.ReturnsAsync(fakeModel);
 
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(IQueryHandler<FakeQuery, FakeModel>)))
+			_mockHandlerFactory
+				.Setup(x => x.CreateHandler(typeof(IQueryHandler<FakeQuery, FakeModel>)))
 				.Returns(handler.Object);
 
 			FakeModel result =
@@ -98,8 +97,8 @@ namespace Quarks.CQRS.Tests
 				.Setup(x => x.HandleAsync(fakeQuery, CancellationToken.None))
 				.ReturnsAsync(fakeModel);
 
-			_mockServiceProvider
-				.Setup(x => x.GetService(typeof(IQueryHandler<FakeQuery, FakeModel>)))
+			_mockHandlerFactory
+				.Setup(x => x.CreateHandler(typeof(IQueryHandler<FakeQuery, FakeModel>)))
 				.Returns(handler.Object);
 
 			FakeModel result =

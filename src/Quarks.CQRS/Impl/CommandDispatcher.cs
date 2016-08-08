@@ -6,11 +6,11 @@ namespace Quarks.CQRS.Impl
 {
 	public class CommandDispatcher : ICommandDispatcher
 	{
-		private readonly IServiceProvider _serviceProvider;
+		private readonly IHandlerFactory _handlerFactory;
 
-		public CommandDispatcher(IServiceProvider serviceProvider)
+		public CommandDispatcher(IHandlerFactory handlerFactory)
 		{
-			_serviceProvider = serviceProvider;
+			_handlerFactory = handlerFactory;
 		}
 
 		public Task DispatchAsync<TCommand>(TCommand command) where TCommand : ICommand
@@ -28,7 +28,7 @@ namespace Quarks.CQRS.Impl
 
 		private ICommandHandler<TCommand> ResolveHandler<TCommand>() where TCommand : ICommand
 		{
-			return (ICommandHandler<TCommand>) _serviceProvider.GetService(typeof (ICommandHandler<TCommand>));
+			return (ICommandHandler<TCommand>) _handlerFactory.CreateHandler(typeof (ICommandHandler<TCommand>));
 		} 
 	}
 }

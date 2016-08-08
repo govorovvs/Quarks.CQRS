@@ -7,11 +7,11 @@ namespace Quarks.CQRS.Impl
 {
 	public class QueryDispatcher : IQueryDispatcher
 	{
-		private readonly IServiceProvider _serviceProvider;
+		private readonly IHandlerFactory _handlerFactory;
 
-		public QueryDispatcher(IServiceProvider serviceProvider)
+		public QueryDispatcher(IHandlerFactory handlerFactory)
 		{
-			_serviceProvider = serviceProvider;
+			_handlerFactory = handlerFactory;
 		}
 
 		public Task<TResult> DispatchAsync<TResult>(IQuery<TResult> query)
@@ -34,7 +34,7 @@ namespace Quarks.CQRS.Impl
 			Type handlerType = typeof(IQueryHandler<,>);
 			Type type = handlerType.MakeGenericType(queryType, resultType);
 
-			return _serviceProvider.GetService(type);
+			return _handlerFactory.CreateHandler(type);
 		}
 	}
 }
