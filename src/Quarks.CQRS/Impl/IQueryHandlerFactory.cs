@@ -10,7 +10,7 @@ namespace Quarks.CQRS.Impl
 		/// <summary>
 		/// Creates query handler of the specified type.
 		/// </summary>
-		/// <param name="handlerType">Type of command handler.</param>
+		/// <param name="handlerType">Type of query handler.</param>
 		/// <returns>Query handler object.</returns>
 		object CreateHandler(Type handlerType);
 	}
