@@ -1,6 +1,9 @@
 ﻿namespace Quarks.CQRS
 {
-    public interface ICommand
+	/// <summary>
+	/// Change the state of an object.
+	/// </summary>
+	public interface ICommand
     {
     }
 }
