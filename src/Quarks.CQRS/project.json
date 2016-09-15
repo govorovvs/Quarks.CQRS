@@ -3,7 +3,7 @@
   "frameworks": {
     "net45": {
     },
-    "netstandard1.6": {
+    "netstandard1.2": {
       "dependencies": {
         "System.Reflection.Extensions": "4.0.1",
         "System.Runtime": "4.1.0",
