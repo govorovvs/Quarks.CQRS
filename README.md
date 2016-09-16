@@ -1,5 +1,7 @@
 # Quarks.CQRS
 
+[![Version](https://img.shields.io/nuget/v/Quarks.CQRS.svg)](https://www.nuget.org/packages/Quarks.CQRS)
+
 ## Command and Query Responsibility Segregation (CQRS) Pattern
 
 Command and Query Responsibility Segregation (CQRS) is a pattern that segregates the operations that read data (Queries) from the operations that update data (Commands) by using separate interfaces.
