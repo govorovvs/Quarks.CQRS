@@ -10,7 +10,7 @@ Command and Query Responsibility Segregation (CQRS) is a pattern that segregates
 
 ## Query example
 
-<pre><code>
+```csharp
 public class GetUserByIdQuery(int id) : IQuery<UserModel>
 {
     public int Id { get; } = id;
@@ -44,11 +44,11 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, UserModel
         return model;
     }
 }
-</code></pre>
+```
 
 ## Command example
 
-<pre><code>
+```csharp
 public class RenameUserCommand(int id, string name) : ICommand
 {
     public int Id { get; } = id;
@@ -87,13 +87,13 @@ public class RenameUserCommandHandler : ICommandHandler<RenameUserCommand>
         }
     }
 }
-</code></pre>
+```
 
 ## Default command/query dispatchers
 
 Library has default implementations of *ICommandDispatcher* and *IQueryDispatcher* based on handler factories. 
 
-<pre><code>
+```csharp
 public class CommandDispatcher(ICommandHandlerFactory handlerFactory) : ICommandDispatcher
 {
     private readonly ICommandHandlerFactory _commandHandlerFactory = handlerFactory;
@@ -117,13 +117,13 @@ public class QueryDispatcher(IQueryHandlerFactory handlerFactory) : IQueryDispat
         return (Task<TResult>) method.Invoke(handler, new object[] {query, cancellationToken});
     }
 }
-</code></pre>
+```
 
 ## Handler factories via IoC
 
 The simplest way to impplement handler factory is to use IoC container. Here is an example uses Castle Windsor
 
-<pre><code>
+```csharp
 public class HandlerFactory(IWindsorContainer container) : ICommandHandlerFactory, IQueryHandlerFactory
 {
     private readonly IWindsorContainer _container = container;
@@ -160,4 +160,4 @@ public class ApplicationCompositionRoot
         );
     }
 }
-</code></pre>
+```
