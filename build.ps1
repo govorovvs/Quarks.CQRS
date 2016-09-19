@@ -1,12 +1,5 @@
 Param(
-    [string]$Script = "build.cake",
-    [string]$Target = "Build",
-    [ValidateSet("Release", "Debug")]
-    [string]$Configuration = "Debug",
-    [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
-    [string]$Verbosity = "Verbose",
-    [string]$Source = "Source",
-    [string]$ApiKey = "ApiKey"
+    [string]$Script = "build.cake"
 )
 
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
@@ -38,6 +31,6 @@ if (!(Test-Path $CAKE_EXE)) {
 }
 
 # Start Cake
-Invoke-Expression "$CAKE_EXE `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`" -source=`"$Source`" -apikey=`"$ApiKey`" "
+Invoke-Expression "$CAKE_EXE `"$Script`" $Args"
 Write-Host
 exit $LASTEXITCODE
