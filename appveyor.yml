@@ -5,10 +5,10 @@ branches:
     - master
 build_script:
   - build.cmd --target=build --configuration=Release
-test_script:
   - build.cmd --target=tests --configuration=Release
-deploy_script:
-  - build.cmd --target=pack --configuration=Release
+  - build.cmd --target=pack --configuration=Release 
+test: off
+deploy: off 
 artifacts:
   - path: TestResult.xml
   - path: 'packages\*.nupkg'
