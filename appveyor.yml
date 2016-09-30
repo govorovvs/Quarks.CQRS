@@ -8,7 +8,7 @@ build_script:
 test_script:
   - build.cmd --target=tests --configuration=Release
 deploy_script:
-  - build.cmd --target=package --configuration=Release
+  - build.cmd --target=pack --configuration=Release
 artifacts:
   - path: TestResult.xml
   - path: 'packages\*.nupkg'
