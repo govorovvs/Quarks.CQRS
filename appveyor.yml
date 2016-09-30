@@ -1,0 +1,9 @@
+branches:
+  only:
+    - master
+build_script:
+  - build.cmd --target=build --configuration=Release
+test_script:
+  - build.cmd --target=tests --configuration=Release
+artifacts:
+  - path: TestResult.xml
