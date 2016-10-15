@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "dotnet-test-nunit": "3.4.0-beta-2",
-    "Moq": "4.5.22",
-    "NUnit": "3.4.1",
+    "Moq": "4.5.23",
+    "NUnit": "3.5.0",
     "Quarks.CQRS": "2.2.0-*"
   },
   "frameworks": {
