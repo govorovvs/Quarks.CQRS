@@ -24,7 +24,7 @@
     "tags": [ "quarks", "architecture", "cqrs" ]
   },
   "title": "Quarks.CQRS",
-  "version": "2.2.0-*",
+  "version": "3.0.0-*",
   "buildOptions": {
     "xmlDoc": true
   }
