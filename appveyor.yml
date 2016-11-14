@@ -3,6 +3,7 @@ image: Visual Studio 2015
 branches:
   only:
     - master
+    - develop
 build_script:
   - build.cmd --target=build --configuration=Release
   - build.cmd --target=tests --configuration=Release

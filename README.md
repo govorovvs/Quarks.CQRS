@@ -24,7 +24,7 @@ public class UserController : Controller
     public async Task<UserModel> GetAsync(int id, CancellationToken cancellationToken)
     {
         GetUserByIdQuery query = new GetUserByIdQuery(id);
-        UserModel model = await _queryDispatcher.DispatchAsync(query, cancellationToken);
+        UserModel model = await _queryDispatcher.DispatchAsync<UserModel>(query, cancellationToken);
         return model;
     }
 }
