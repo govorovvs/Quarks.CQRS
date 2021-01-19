@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.2</TargetFrameworks>
+    <Version>3.0.0</Version>
+    <Authors>viktor.govorov</Authors>
+    <RepositoryUrl>https://github.com/govorovvs/Quarks.CQRS.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>quarks;architecture;cqrs</PackageTags>
+    <PackageIcon>logo.png</PackageIcon>
+    <Description>Foundations for CQRS</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\logo.png" Pack="true" PackagePath="logo.png" />
+  </ItemGroup>
+
+</Project>
