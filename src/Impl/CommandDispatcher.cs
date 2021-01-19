@@ -9,17 +9,15 @@ namespace Quarks.CQRS.Impl
 	/// </summary>
 	public class CommandDispatcher : ICommandDispatcher
 	{
-		private readonly ICommandHandlerFactory _commandHandlerFactory;
+        private readonly IServiceProvider _serviceProvider;
 
 		/// <summary>
 		/// Initializes a new instance of <see cref="CommandDispatcher"/> class with handler factory.
 		/// </summary>
-		/// <param name="commandHandlerFactory">An object that creates handlers.</param>
-		public CommandDispatcher(ICommandHandlerFactory commandHandlerFactory)
+		/// <param name="serviceProvider">An object that creates handlers.</param>
+		public CommandDispatcher(IServiceProvider serviceProvider)
 		{
-			if (commandHandlerFactory == null) throw new ArgumentNullException(nameof(commandHandlerFactory));
-
-			_commandHandlerFactory = commandHandlerFactory;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 		}
 
 		/// <summary>
@@ -33,13 +31,13 @@ namespace Quarks.CQRS.Impl
 		{
 			if (command == null) throw new ArgumentNullException(nameof(command));
 
-			ICommandHandler<TCommand> handler = ResolveHandler<TCommand>();
+			var handler = ResolveHandler<TCommand>();
 			return handler.HandleAsync(command, cancellationToken);
 		}
 
 		private ICommandHandler<TCommand> ResolveHandler<TCommand>() where TCommand : ICommand
-		{
-			return (ICommandHandler<TCommand>) _commandHandlerFactory.CreateHandler(typeof (ICommandHandler<TCommand>));
-		} 
+        {
+            return (ICommandHandler<TCommand>)_serviceProvider.GetService(typeof(ICommandHandler<TCommand>));
+        } 
 	}
 }

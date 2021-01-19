@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,18 +11,19 @@ namespace Quarks.CQRS.Impl
 	/// Basic implementation of <see cref="IQueryDispatcher"/>. 
 	/// </summary>
 	public class QueryDispatcher : IQueryDispatcher
-	{
-		private readonly IQueryHandlerFactory _commandHandlerFactory;
+    {
+        private readonly IServiceProvider _serviceProvider;
 
-		/// <summary>
+        private static readonly IDictionary<Type, MethodInfo> HandleMethods =
+            new ConcurrentDictionary<Type, MethodInfo>();
+
+        /// <summary>
 		/// Initializes a new instance of <see cref="QueryDispatcher"/> class with handler factory.
 		/// </summary>
-		/// <param name="commandHandlerFactory">An object that creates handlers.</param>
-		public QueryDispatcher(IQueryHandlerFactory commandHandlerFactory)
+		/// <param name="serviceProvider">An object that creates handlers.</param>
+		public QueryDispatcher(IServiceProvider serviceProvider)
 		{
-			if (commandHandlerFactory == null) throw new ArgumentNullException(nameof(commandHandlerFactory));
-
-			_commandHandlerFactory = commandHandlerFactory;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 		}
 
 		/// <summary>
@@ -36,16 +39,21 @@ namespace Quarks.CQRS.Impl
 
 			Type queryType = query.GetType();
 			object handler = ResolveHandler(queryType, typeof(TResult));
-			MethodInfo method = handler.GetType().GetRuntimeMethod("HandleAsync", new[] {queryType, cancellationToken.GetType()});
+
+            if (HandleMethods.TryGetValue(handler.GetType(), out var method) == false)
+            {
+				method = handler.GetType().GetRuntimeMethod("HandleAsync", new[] { queryType, cancellationToken.GetType() });
+                HandleMethods.Add(handler.GetType(), method);
+            }
+
 			return (Task<TResult>) method.Invoke(handler, new object[] {query, cancellationToken});
 		}
 
 		private object ResolveHandler(Type queryType, Type resultType) 
 		{
-			Type handlerType = typeof(IQueryHandler<,>);
+            Type handlerType = typeof(IQueryHandler<,>);
 			Type type = handlerType.MakeGenericType(queryType, resultType);
-
-			return _commandHandlerFactory.CreateHandler(type);
-		}
+			return _serviceProvider.GetService(type);
+        }
 	}
 }
