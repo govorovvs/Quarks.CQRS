@@ -91,28 +91,28 @@ public class RenameUserCommandHandler : ICommandHandler<RenameUserCommand>
 
 ## Default command/query dispatchers
 
-Library has default implementations of *ICommandDispatcher* and *IQueryDispatcher* based on handler factories. 
+Library has default implementations of *ICommandDispatcher* and *IQueryDispatcher* based on `IServiceProvider`. 
 
 ```csharp
-public class CommandDispatcher(ICommandHandlerFactory handlerFactory) : ICommandDispatcher
+public class CommandDispatcher : ICommandDispatcher
 {
-    private readonly ICommandHandlerFactory _commandHandlerFactory = handlerFactory;
+    private readonly IServiceProvider _serviceProvider;
 
     public Task DispatchAsync<TCommand>(TCommand command, CancellationToken cancellationToken) where TCommand : ICommand
     {
-        ICommandHandler<TCommand> handler = _commandHandlerFactory.CreateHandler(typeof (ICommandHandler<TCommand>));
+        ICommandHandler<TCommand> handler = _serviceProvider.GetService(typeof (ICommandHandler<TCommand>));
         return handler.HandleAsync(command, cancellationToken);
     }
 }
 
-public class QueryDispatcher(IQueryHandlerFactory handlerFactory) : IQueryDispatcher
+public class QueryDispatcher : IQueryDispatcher
 {
-    private readonly IQueryHandlerFactory _commandHandlerFactory = handlerFactory;
+    private readonly IServiceProvider _serviceProvider;
 
     public Task<TResult> DispatchAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken)
     {
         Type concreteHandlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
-        object handler =  _commandHandlerFactory.CreateHandler(concreteHandlerType);
+        object handler =  _serviceProvider.GetService(concreteHandlerType);
         MethodInfo method = handler.GetType().GetRuntimeMethod("HandleAsync", new[] {query.GetType(), cancellationToken.GetType()});
         return (Task<TResult>) method.Invoke(handler, new object[] {query, cancellationToken});
     }
@@ -121,43 +121,16 @@ public class QueryDispatcher(IQueryHandlerFactory handlerFactory) : IQueryDispat
 
 ## Handler factories via IoC
 
-The simplest way to impplement handler factory is to use IoC container. Here is an example uses Castle Windsor
+The simplest way to impplement handler factory is to use IoC container. Here is an example uses `ServiceCollection`
 
 ```csharp
-public class HandlerFactory(IWindsorContainer container) : ICommandHandlerFactory, IQueryHandlerFactory
+public static class CqrsServiceCollectionExtensions
 {
-    private readonly IWindsorContainer _container = container;
-
-    public object CreateHandler(Type handlerType)
+    public void RegisterCQRS(this IServiceCollection services)
     {
-        return _container.Resolve(handlerType);
-    }
-}
-
-public class ApplicationCompositionRoot
-{
-    public void RegisterCQRS(IWindsorContainer container)
-    {
-        container.Register(
-            Classes
-                .FromAssemblyContaining<CommandHandlers>()
-                .BasedOn(typeof(ICommandHandler<>))
-                .WithServiceAllInterfaces(),
-            Classes
-                .FromAssemblyContaining<QueryHandlers>()
-                .BasedOn(typeof(IQueryHandler<,>))
-                .WithServiceAllInterfaces());
-
-        var handlerFactory = new HandlerFactory(container);
-
-        container.Register(
-            Component
-                .For<ICommandHandlerFactory>()
-                .Instance(handlerFactory),
-            Component
-                .For<IQueryHandlerFactory>()
-                .Instance(handlerFactory)
-        );
-    }
+        services.TryAddTransient<ICommandDispatcher, CommandDispatcher>();
+        services.TryAddTransient<IQueryDispatcher, QueryDispatcher>();
+        return services;
+    );
 }
 ```

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -6,18 +7,18 @@ using Quarks.CQRS.Impl;
 
 namespace Quarks.CQRS.Tests
 {
-	[TestFixture]
+    [TestFixture]
     public class QueryDispatcherTests
 	{
 		private CancellationToken _cancellationToken;
-		private Mock<IQueryHandlerFactory> _mockHandlerFactory;
+		private Mock<IServiceProvider> _mockHandlerFactory;
 		private QueryDispatcher _dispatcher;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_cancellationToken = CancellationToken.None;
-			_mockHandlerFactory = new Mock<IQueryHandlerFactory>();
+			_mockHandlerFactory = new Mock<IServiceProvider>();
 			_dispatcher = new QueryDispatcher(_mockHandlerFactory.Object);
 		}
 
@@ -33,7 +34,7 @@ namespace Quarks.CQRS.Tests
 				.ReturnsAsync(fakeModel);
 
 			_mockHandlerFactory
-				.Setup(x => x.CreateHandler(typeof(IQueryHandler<FakeQuery, FakeModel>)))
+				.Setup(x => x.GetService(typeof(IQueryHandler<FakeQuery, FakeModel>)))
 				.Returns(handler.Object);
 
 			FakeModel result =

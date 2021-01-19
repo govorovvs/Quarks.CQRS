@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -9,7 +10,7 @@ namespace Quarks.CQRS.Tests
 	[TestFixture]
 	public class CommandDispatcherTests
 	{
-		private Mock<ICommandHandlerFactory> _mockHandlerFactory;
+		private Mock<IServiceProvider> _mockHandlerFactory;
 		private CommandDispatcher _dispatcher;
 		private CancellationToken _cancellationToken;
 
@@ -17,7 +18,7 @@ namespace Quarks.CQRS.Tests
 		public void SetUp()
 		{
 			_cancellationToken = CancellationToken.None;
-			_mockHandlerFactory = new Mock<ICommandHandlerFactory>();
+			_mockHandlerFactory = new Mock<IServiceProvider>();
 			_dispatcher = new CommandDispatcher(_mockHandlerFactory.Object);
 		}
 
@@ -32,7 +33,7 @@ namespace Quarks.CQRS.Tests
 				.Returns(Task.CompletedTask);
 
 			_mockHandlerFactory
-				.Setup(x => x.CreateHandler(typeof(ICommandHandler<FakeCommand>)))
+				.Setup(x => x.GetService(typeof(ICommandHandler<FakeCommand>)))
 				.Returns(handler.Object);
 
 			await _dispatcher.DispatchAsync(fakeCommand, _cancellationToken);
