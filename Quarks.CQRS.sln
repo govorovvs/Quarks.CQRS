@@ -6,24 +6,24 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{560773B6-47B9-4E7B-8A74-FF0ABEB5CCCC}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
-		build.cake = build.cake
-		build.cmd = build.cmd
-		build.ps1 = build.ps1
 		global.json = global.json
 		LICENSE.txt = LICENSE.txt
 		logo.png = logo.png
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5AECE615-9873-48ED-8B56-7E982198A1F5}"
-	ProjectSection(SolutionItems) = preProject
-		tools\packages.config = tools\packages.config
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quarks.CQRS", "src\Quarks.CQRS.csproj", "{8910B536-2D78-49EC-B284-9CF3F283E222}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quarks.CQRS.Tests", "tests\Quarks.CQRS.Tests.csproj", "{300420C0-7E1A-4DB5-8C90-2EECC2A7D1F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{3E30B8E1-65F4-4681-B4DB-359660F1FEBA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{438C596F-8E8E-4102-97DC-43B1C9D896BE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\pull-request.yml = .github\workflows\pull-request.yml
+		.github\workflows\push.yml = .github\workflows\push.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,7 +44,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5AECE615-9873-48ED-8B56-7E982198A1F5} = {560773B6-47B9-4E7B-8A74-FF0ABEB5CCCC}
+		{438C596F-8E8E-4102-97DC-43B1C9D896BE} = {3E30B8E1-65F4-4681-B4DB-359660F1FEBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BEE2F01-2F83-46A2-9A07-13B4825A3FC6}

@@ -1,0 +1,37 @@
+name: publish
+on:
+  release:
+    types: [published]
+    branches:
+      - master
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install dotnet 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: install packages
+        run: dotnet restore
+
+      - name: build
+        run: dotnet build
+
+      - name: test
+        run: dotnet test
+        
+      - name: publish 
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Quarks.CQRS.csproj
+          VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
+          TAG_COMMIT: false
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
